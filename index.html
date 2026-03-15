@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>அருணாச்சலா வாடகை பத்திரம்</title>
+  <meta name="description" content="POS billing system for Arunachala Kadai – fast, simple, and efficient." />
+  <link rel="stylesheet" href="style.css" />
+  <script>if (sessionStorage.getItem('ak_logged_in') !== 'true') { window.location.replace('login.html'); }</script>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🏪</text></svg>" />
+</head>
+
+<body>
+
+  <!-- ── Navbar ──────────────────────────────── -->
+  <nav class="navbar no-print" role="navigation">
+    <div class="navbar__brand">
+      <div class="navbar__logo">🏪</div>
+      <div>
+        <div class="navbar__title">Arunachala Kadai</div>
+        <div class="navbar__sub">POS Billing System</div>
+      </div>
+    </div>
+    <div class="navbar__nav">
+      <a href="index.html" class="nav-btn active">
+        <span class="icon">🧾</span> Billing
+      </a>
+      <a href="menu.html" class="nav-btn">
+        <span class="icon">📋</span> Manage Menu
+      </a>
+      <a href="report.html" class="nav-btn">
+        <span class="icon">📊</span> Reports
+      </a>
+      <button class="nav-btn" id="logoutBtn"
+        onclick="sessionStorage.removeItem('ak_logged_in');window.location.replace('login.html');" title="Logout">
+        <span class="icon">🚪</span> Logout
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── POS Layout ──────────────────────────── -->
+  <div class="page-wrapper">
+
+    <!-- Left: Menu Panel -->
+    <div class="menu-panel" id="menuPanel">
+      <div class="menu-panel__header no-print">
+        <span class="menu-panel__title">🛍️ Menu</span>
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="searchInput" placeholder="Search items…" autocomplete="off" />
+        </div>
+      </div>
+
+      <!-- Category filter tabs -->
+      <div class="cat-tabs no-print" id="catTabs"></div>
+
+      <!-- Menu grid (grouped by category) -->
+      <div id="menuContainer"></div>
+    </div>
+
+    <!-- Right: Cart Panel -->
+    <div class="cart-panel no-print" id="cartPanel">
+      <div class="cart-panel__header">
+        <div class="cart-panel__title">
+          🛒 Cart
+          <span class="cart-count" id="cartCount">0</span>
+        </div>
+      </div>
+
+      <!-- Customer info -->
+      <div class="customer-form">
+        <input class="form-input" type="text" id="customerName" placeholder="Customer Name (optional)" />
+        <input class="form-input" type="text" id="customerPhone" placeholder="Phone Number (optional)" />
+      </div>
+
+      <!-- Items -->
+      <div class="cart-items" id="cartItems">
+        <div class="cart-empty">
+          <div class="cart-empty__icon">🛒</div>
+          <div class="cart-empty__text">Tap an item to add it to the cart</div>
+        </div>
+      </div>
+
+      <!-- Footer totals + actions -->
+      <div class="cart-footer">
+        <div class="cart-totals">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span id="subtotal">₹0.00</span>
+          </div>
+          <div class="total-row grand">
+            <span>Total</span>
+            <span id="grandTotal">₹0.00</span>
+          </div>
+        </div>
+        <div class="cart-actions">
+          <button class="btn btn-gold" id="printBtn">
+            🖨️ Print Bill
+          </button>
+          <button class="btn btn-danger" id="clearBtn">
+            🗑️ Clear Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Hidden Print Invoice ─────────────────── -->
+  <div id="print-bill">
+    <div class="print-bill__shop">
+      <h2>🏪 Arunachala Kadai</h2>
+      <p>Rental &amp; Household Items</p>
+      <p>குட்டை தெரு, புதிய கடலூர் மெயின் ரோடு, திருவதிகை</p>
+      <p>📞 8883155563</p>
+      <p id="pb-datetime"></p>
+      <p id="pb-customer"></p>
+    </div>
+    <hr class="print-bill__divider" />
+    <table class="print-bill__table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item</th>
+          <th class="right">Qty</th>
+          <th class="right">Rate</th>
+          <th class="right">Amount</th>
+        </tr>
+      </thead>
+      <tbody id="pb-items"></tbody>
+    </table>
+    <hr class="print-bill__divider" />
+    <div class="print-bill__total">
+      <span>TOTAL</span>
+      <span id="pb-total"></span>
+    </div>
+    <div class="print-bill__footer">
+      <p>Thank you for your business!</p>
+      <p>Please visit again 🙏</p>
+    </div>
+  </div>
+
+  <!-- ── Toast container ───────────────────── -->
+  <div id="toast-container"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

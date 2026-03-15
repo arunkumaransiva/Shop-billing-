@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login – Arunachala Kadai</title>
+    <meta name="description" content="Login to access Arunachala Kadai POS Billing System." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>🏪</text></svg>" />
+</head>
+
+<body class="login-body">
+
+    <!-- Animated background blobs -->
+    <div class="login-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-wrapper">
+        <div class="login-card">
+
+            <!-- Brand -->
+            <div class="login-brand">
+                <div class="login-logo">🏪</div>
+                <h1 class="login-title">Arunachala Kadai</h1>
+                <p class="login-subtitle">POS Billing System</p>
+            </div>
+
+            <!-- Welcome text -->
+            <div class="login-welcome">
+                <h2>Welcome Back 👋</h2>
+                <p>Sign in to continue to your dashboard</p>
+            </div>
+
+            <!-- Error message -->
+            <div class="login-error" id="loginError">
+                <span>❌</span>
+                <span id="loginErrorText">Invalid username or password.</span>
+            </div>
+
+            <!-- Form -->
+            <form class="login-form" id="loginForm" autocomplete="off">
+
+                <div class="login-field">
+                    <label class="login-label" for="username">Username</label>
+                    <div class="login-input-wrap">
+                        <span class="login-input-icon">👤</span>
+                        <input class="login-input" type="text" id="username" name="username"
+                            placeholder="Enter your username" autocomplete="username" required />
+                    </div>
+                </div>
+
+                <div class="login-field">
+                    <label class="login-label" for="password">Password</label>
+                    <div class="login-input-wrap">
+                        <span class="login-input-icon">🔒</span>
+                        <input class="login-input" type="password" id="password" name="password"
+                            placeholder="Enter your password" autocomplete="current-password" required />
+                        <button type="button" class="toggle-pwd" id="togglePwd" title="Show/hide password">👁️</button>
+                    </div>
+                </div>
+
+                <button class="btn-login" type="submit" id="loginBtn">
+                    <span class="btn-login__text">Sign In</span>
+                    <span class="btn-login__icon">→</span>
+                </button>
+
+            </form>
+
+            <!-- Footer note -->
+            <p class="login-footer-note">🔐 Secure access · Arunachala Kadai</p>
+
+        </div>
+    </div>
+
+    <script>
+        // ── Credentials (stored in localStorage for offline use) ──────────────
+        // Default credentials — change via the settings if needed
+        const DEFAULT_USER = 'siva';
+        const DEFAULT_PASS = '2007';
+
+        // If already logged in, go straight to billing
+        if (sessionStorage.getItem('ak_logged_in') === 'true') {
+            window.location.replace('index.html');
+        }
+
+        const form = document.getElementById('loginForm');
+        const errBox = document.getElementById('loginError');
+        const errText = document.getElementById('loginErrorText');
+        const loginBtn = document.getElementById('loginBtn');
+        const togglePwd = document.getElementById('togglePwd');
+        const pwdInput = document.getElementById('password');
+
+        // Show / hide password
+        togglePwd.addEventListener('click', () => {
+            const isText = pwdInput.type === 'text';
+            pwdInput.type = isText ? 'password' : 'text';
+            togglePwd.textContent = isText ? '👁️' : '🙈';
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            errBox.classList.remove('show');
+
+            const user = document.getElementById('username').value.trim();
+            const pass = pwdInput.value;
+
+            // Retrieve stored credentials or use defaults
+            const storedUser = localStorage.getItem('ak_username') || DEFAULT_USER;
+            const storedPass = localStorage.getItem('ak_password') || DEFAULT_PASS;
+
+            if (user === storedUser && pass === storedPass) {
+                loginBtn.disabled = true;
+                loginBtn.querySelector('.btn-login__text').textContent = 'Signing in…';
+
+                // Small delay for UX feedback
+                setTimeout(() => {
+                    sessionStorage.setItem('ak_logged_in', 'true');
+                    window.location.replace('index.html');
+                }, 600);
+            } else {
+                errText.textContent = 'Invalid username or password. Please try again.';
+                errBox.classList.add('show');
+                // Shake animation
+                form.classList.add('shake');
+                setTimeout(() => form.classList.remove('shake'), 500);
+                pwdInput.value = '';
+                pwdInput.focus();
+            }
+        });
+
+        // Clear error on typing
+        document.getElementById('username').addEventListener('input', () => errBox.classList.remove('show'));
+        pwdInput.addEventListener('input', () => errBox.classList.remove('show'));
+    </script>
+
+</body>
+
+</html>

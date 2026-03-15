@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arunachala Kadai – Manage Menu</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>if (sessionStorage.getItem('ak_logged_in') !== 'true') { window.location.replace('login.html'); }</script>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>📋</text></svg>" />
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation">
+        <div class="navbar__brand">
+            <div class="navbar__logo">🏪</div>
+            <div>
+                <div class="navbar__title">Arunachala Kadai</div>
+                <div class="navbar__sub">Manage Menu</div>
+            </div>
+        </div>
+        <div class="navbar__nav">
+            <a href="index.html" class="nav-btn"><span class="icon">🧾</span> Billing</a>
+            <a href="menu.html" class="nav-btn active"><span class="icon">📋</span> Manage Menu</a>
+            <a href="report.html" class="nav-btn"><span class="icon">📊</span> Reports</a>
+            <button class="nav-btn"
+                onclick="sessionStorage.removeItem('ak_logged_in');window.location.replace('login.html');"
+                title="Logout">
+                <span class="icon">🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="page-container">
+
+        <!-- Header -->
+        <div class="page-header">
+            <div>
+                <h1>Manage Menu</h1>
+                <p style="color:var(--text2);font-size:.85rem;margin-top:4px;">Add, edit or delete items from your menu
+                </p>
+            </div>
+            <button class="btn-add" id="addItemBtn">➕ Add Item</button>
+        </div>
+
+        <!-- Search & filter -->
+        <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+            <div class="search-box" style="flex:1;max-width:300px;">
+                <span>🔍</span>
+                <input type="text" id="menuSearch" placeholder="Search items…" autocomplete="off" />
+            </div>
+            <select class="select-styled" id="catFilter">
+                <option value="All">All Categories</option>
+            </select>
+        </div>
+
+        <!-- Table -->
+        <div class="menu-table-wrap">
+            <table class="menu-table" id="menuTableEl">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Price (₹)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="menuTableBody"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- ── Add / Edit Modal ──────────────────────── -->
+    <div class="modal-overlay" id="modalOverlay" style="display:none;">
+        <div class="modal" role="dialog" aria-modal="true">
+            <h2 id="modalTitle">Add New Item</h2>
+
+            <div class="form-group">
+                <label for="fi-name">Item Name *</label>
+                <input class="form-control" id="fi-name" type="text" placeholder="e.g. Table" />
+            </div>
+            <div class="form-group">
+                <label for="fi-category">Category *</label>
+                <select class="form-control" id="fi-category">
+                    <option value="Furniture">Furniture</option>
+                    <option value="Stoves">Stoves</option>
+                    <option value="Vatta">Vatta</option>
+                    <option value="Others">Others</option>
+                    <option value="Koththu">Koththu</option>
+                    <option value="Betchti">Betchti</option>
+                    <option value="Tent">Tent</option>
+                    <option value="Marppu">Marppu</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fi-price">Price (₹)</label>
+                <input class="form-control" id="fi-price" type="number" min="0" step="0.01" placeholder="0.00" />
+            </div>
+            <div class="form-group">
+                <label for="fi-image">Image (optional)</label>
+                <input class="form-control" id="fi-image" type="file" accept="image/*" />
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-outline" id="modalCancelBtn"
+                    style="width:auto;padding:10px 22px;">Cancel</button>
+                <button class="btn btn-gold" id="modalSaveBtn" style="width:auto;padding:10px 22px;">💾 Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast-container"></div>
+
+    <script src="data.js"></script>
+    <script src="menu.js"></script>
+</body>
+
+</html>

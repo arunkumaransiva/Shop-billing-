@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arunachala Kadai – Monthly Sales Report</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>if (sessionStorage.getItem('ak_logged_in') !== 'true') { window.location.replace('login.html'); }</script>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32'>📊</text></svg>" />
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar" role="navigation">
+        <div class="navbar__brand">
+            <div class="navbar__logo">🏪</div>
+            <div>
+                <div class="navbar__title">Arunachala Kadai</div>
+                <div class="navbar__sub">Monthly Sales Report</div>
+            </div>
+        </div>
+        <div class="navbar__nav">
+            <a href="index.html" class="nav-btn"><span class="icon">🧾</span> Billing</a>
+            <a href="menu.html" class="nav-btn"><span class="icon">📋</span> Manage Menu</a>
+            <a href="report.html" class="nav-btn active"><span class="icon">📊</span> Reports</a>
+            <button class="nav-btn"
+                onclick="sessionStorage.removeItem('ak_logged_in');window.location.replace('login.html');"
+                title="Logout">
+                <span class="icon">🚪</span> Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="page-container">
+
+        <!-- Header -->
+        <div class="page-header">
+            <div>
+                <h1>Monthly Sales Report</h1>
+                <p style="color:var(--text2);font-size:.85rem;margin-top:4px;">View and analyse your billing history</p>
+            </div>
+            <button class="btn-add" onclick="exportCSV()">📥 Export CSV</button>
+        </div>
+
+        <!-- Month / Year Controls -->
+        <div class="report-controls">
+            <label for="monthSel">Month:</label>
+            <select class="select-styled" id="monthSel">
+                <option value="0">January</option>
+                <option value="1">February</option>
+                <option value="2">March</option>
+                <option value="3">April</option>
+                <option value="4">May</option>
+                <option value="5">June</option>
+                <option value="6">July</option>
+                <option value="7">August</option>
+                <option value="8">September</option>
+                <option value="9">October</option>
+                <option value="10">November</option>
+                <option value="11">December</option>
+            </select>
+
+            <label for="yearSel">Year:</label>
+            <select class="select-styled" id="yearSel"></select>
+
+            <button class="btn-add" onclick="loadReport()" style="margin-left:8px;">🔍 Load</button>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card" data-icon="💰">
+                <div class="stat-card__label">Total Revenue</div>
+                <div class="stat-card__value" id="statRevenue">₹0</div>
+                <div class="stat-card__sub">This month</div>
+            </div>
+            <div class="stat-card" data-icon="🧾">
+                <div class="stat-card__label">Total Bills</div>
+                <div class="stat-card__value" id="statBills">0</div>
+                <div class="stat-card__sub">Transactions</div>
+            </div>
+            <div class="stat-card" data-icon="📦">
+                <div class="stat-card__label">Items Rented</div>
+                <div class="stat-card__value" id="statItems">0</div>
+                <div class="stat-card__sub">Total qty</div>
+            </div>
+            <div class="stat-card" data-icon="🏆">
+                <div class="stat-card__label">Top Item</div>
+                <div class="stat-card__value" id="statTop" style="font-size:1rem;">—</div>
+                <div class="stat-card__sub">Most rented</div>
+            </div>
+        </div>
+
+        <!-- Daily Revenue Chart -->
+        <div class="chart-wrap">
+            <div class="chart-title">📈 Daily Revenue</div>
+            <canvas id="salesChart"></canvas>
+        </div>
+
+        <!-- Bills Table -->
+        <div class="bills-table-wrap">
+            <table class="bills-table">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Customer</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="billsTableBody"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Toast -->
+    <div id="toast-container"></div>
+
+    <script src="data.js"></script>
+    <script src="report.js"></script>
+</body>
+
+</html>
